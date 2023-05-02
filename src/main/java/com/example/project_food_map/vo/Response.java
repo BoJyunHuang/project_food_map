@@ -10,7 +10,9 @@ public class Response {
 	private String message;
 	private Store store;
 	private Menu menu;
+	private List<Store> storeList;
 	private List<Menu> menuList;
+	private List<StoreAndMenu> storeAndMenuList;
 
 	public Response() {
 		super();
@@ -33,9 +35,9 @@ public class Response {
 		this.message = message;
 	}
 
-	public Response(List<Menu> menuList, String message) {
+	public Response(List<StoreAndMenu> storeAndMenuList, String message) {
 		super();
-		this.menuList = menuList;
+		this.storeAndMenuList = storeAndMenuList;
 		this.message = message;
 	}
 
@@ -61,6 +63,14 @@ public class Response {
 
 	public void setMenu(Menu menu) {
 		this.menu = menu;
+	}
+
+	public List<Store> getStoreList() {
+		return storeList;
+	}
+
+	public void setStoreList(List<Store> storeList) {
+		this.storeList = storeList;
 	}
 
 	public List<Menu> getMenuList() {

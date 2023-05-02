@@ -23,11 +23,10 @@ public class Store {
 		super();
 	}
 
-	public Store(String name, String city, double point) {
+	public Store(String name, String city) {
 		super();
 		this.name = name;
 		this.city = city;
-		this.point = point;
 	}
 
 	public String getName() {

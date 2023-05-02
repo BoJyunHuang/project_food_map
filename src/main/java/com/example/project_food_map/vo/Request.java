@@ -3,13 +3,17 @@ package com.example.project_food_map.vo;
 import java.util.List;
 
 import com.example.project_food_map.entity.Menu;
+import com.example.project_food_map.entity.MenuId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Request {
-
+	// store
 	private String name;
 	private String city;
-
+	private double point;
+	// double id
+	private MenuId menuId;
+	// menu
 	private String menu;
 	@JsonProperty("store_name")
 	private String storeName;
@@ -18,6 +22,8 @@ public class Request {
 	private int menuPoint;
 	@JsonProperty("menu_list")
 	private List<Menu> menuList;
+	
+	private int times;
 
 	public String getName() {
 		return name;
@@ -33,6 +39,22 @@ public class Request {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public double getPoint() {
+		return point;
+	}
+
+	public void setPoint(double point) {
+		this.point = point;
+	}
+
+	public MenuId getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(MenuId menuId) {
+		this.menuId = menuId;
 	}
 
 	public String getMenu() {
@@ -73,5 +95,13 @@ public class Request {
 
 	public void setMenuList(List<Menu> menuList) {
 		this.menuList = menuList;
+	}
+
+	public int getTimes() {
+		return times;
+	}
+
+	public void setTimes(int times) {
+		this.times = times;
 	}
 }

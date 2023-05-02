@@ -3,16 +3,19 @@ package com.example.project_food_map.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "menu")
+@IdClass(value = MenuId.class)
 public class Menu {
 	
 	@Id
 	@Column(name = "menu")
 	private String menu;
 	
+	@Id
 	@Column(name = "store_name")
 	private String storeName;
 	
