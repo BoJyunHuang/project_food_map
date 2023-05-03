@@ -29,11 +29,11 @@ public class FindServiceImpl implements FindService {
 			return new Response(RtnCode.INCORRECT.getMessage());
 		}
 		// ·j´M«°¥«
-		List<StoreAndMenu> res = storeDao.findStoreAndMenuByCityLimit(city, times);
+		List<StoreAndMenu> res = storeDao.findStoreAndMenuByCityLimit(city);
 		if (CollectionUtils.isEmpty(res)) {
 			return new Response(RtnCode.NOT_FOUND.getMessage());
 		}
-		return new Response(res, RtnCode.SUCCESS.getMessage());
+		return new Response(res.subList(0, times), RtnCode.SUCCESS.getMessage());
 	}
 
 	@Override

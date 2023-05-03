@@ -17,23 +17,23 @@ public interface MenuDao extends JpaRepository<Menu, MenuId> {
 
 	// 找尋店家菜單存在與否
 	public List<Menu> findByStoreName(String storeName);
-	
+
 	// 更新資訊-更改價錢
 	@Transactional
 	@Modifying
-	@Query("update Menu m set m.price = :price where m.menuId = :menuId")
-	public int updateMenuPriceByMenuId(@Param("menuId") MenuId menuId, @Param("price") int price);
+	@Query("update Menu m set m.price = :price where m.menu = :menu and m.storeName = :storeName")
+	public int updateMenuPriceByMenuId(@Param("menu") String menu, @Param("storeName") String storeName,
+			@Param("price") int price);
 
 	// 更新資訊-更改評分
 	@Transactional
 	@Modifying
-	@Query("update Menu m set m.menuPoint = :menuPoint where m.menuId = :menuId")
-	public int updateMenuPointByMenuId(@Param("menuId") MenuId menuId, @Param("menuPoint") int menuPoint);
+	@Query("update Menu m set m.menuPoint = :menuPoint where m.menu = :menu and m.storeName = :storeName")
+	public int updateMenuPointByMenuId(@Param("menu") String menu, @Param("storeName") String storeName,
+			@Param("menuPoint") int menuPoint);
 
-	// 更新資訊-取得平均分數
-	@Transactional
-	@Modifying
-	@Query("select AVG(m.menuPoint) from Menu m where m.menuId = :menuId")
-	public int getAverageMenuPoint(@Param("menuId") MenuId menuId);
-	
+	// 取得平均分數
+	@Query("select round(avg(m.menuPoint), 1) from Menu m where m.storeName = :storeName")
+	public double getAverageMenuPoint(@Param("storeName") String storeName);
+
 }

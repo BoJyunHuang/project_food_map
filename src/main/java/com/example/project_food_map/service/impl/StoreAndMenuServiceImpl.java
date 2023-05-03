@@ -42,9 +42,12 @@ public class StoreAndMenuServiceImpl implements StoreService, MenuService {
 		if (isExist) {
 			return new Response(RtnCode.ALREADY_EXISTED.getMessage());
 		}
-		// 儲存新檔
+		// 儲存新檔，並更新評分
 		Menu newMenu = new Menu(menu, storeName, price, menuPoint);
-		return new Response(menuDao.save(newMenu), RtnCode.SUCCESS.getMessage());
+		menuDao.save(newMenu);
+		double avg = menuDao.getAverageMenuPoint(storeName);
+		storeDao.updatePointById(menuId.getStoreName(), avg);
+		return new Response(RtnCode.SUCCESSFUL.getMessage());
 	}
 
 	@Override
@@ -62,15 +65,17 @@ public class StoreAndMenuServiceImpl implements StoreService, MenuService {
 		}
 		// 修改價錢
 		if (request.getPrice() > 0) {
-			menuDao.updateMenuPriceByMenuId(request.getMenuId(), request.getPrice());
+			menuDao.updateMenuPriceByMenuId(request.getMenuId().getMenu(), request.getMenuId().getStoreName(),
+					request.getPrice());
 			flag = true;
 		}
 		// 修改評分
-		if (request.getMenuPoint() > 0 || request.getMenuPoint() < 6) {
-			menuDao.updateMenuPriceByMenuId(request.getMenuId(), request.getMenuPoint());
+		if (request.getMenuPoint() > 0 && request.getMenuPoint() < 6) {
+			menuDao.updateMenuPointByMenuId(request.getMenuId().getMenu(), request.getMenuId().getStoreName(),
+					request.getMenuPoint());
 			// 取得平均並修改總分
-			double avg = menuDao.getAverageMenuPoint(request.getMenuId());
-			storeDao.updateStorePointById(request.getMenuId().getStoreName(), avg);
+			double avg = menuDao.getAverageMenuPoint(request.getMenuId().getStoreName());
+			storeDao.updatePointById(request.getMenuId().getStoreName(), avg);
 			flag = true;
 		}
 		if (!flag) {
@@ -82,7 +87,7 @@ public class StoreAndMenuServiceImpl implements StoreService, MenuService {
 	@Override
 	public Response deleteMenu(MenuId menuId) {
 		// 防止輸入為空
-		if (menuId == null || StringUtils.hasText(menuId.getMenu()) || StringUtils.hasText(menuId.getStoreName())) {
+		if (menuId == null || !StringUtils.hasText(menuId.getMenu()) || !StringUtils.hasText(menuId.getStoreName())) {
 			return new Response(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 		// 確認餐單存在
@@ -93,8 +98,8 @@ public class StoreAndMenuServiceImpl implements StoreService, MenuService {
 		// 刪除菜單
 		menuDao.deleteById(menuId);
 		// 取得平均並修改總分
-		double avg = menuDao.getAverageMenuPoint(menuId);
-		storeDao.updateStorePointById(menuId.getStoreName(), avg);
+		double avg = menuDao.getAverageMenuPoint(menuId.getStoreName());
+		storeDao.updatePointById(menuId.getStoreName(), avg);
 		return new Response(RtnCode.SUCCESSFUL.getMessage());
 	}
 
@@ -133,7 +138,7 @@ public class StoreAndMenuServiceImpl implements StoreService, MenuService {
 	@Override
 	public Response deleteStore(String store) {
 		// 防止輸入為空
-		if (StringUtils.hasText(store)) {
+		if (!StringUtils.hasText(store)) {
 			return new Response(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 		// 檢查存在
@@ -143,9 +148,9 @@ public class StoreAndMenuServiceImpl implements StoreService, MenuService {
 		}
 		// 檢查菜單存在
 		List<Menu> res = menuDao.findByStoreName(store);
-		if (!CollectionUtils.isEmpty(res)){
+		if (!CollectionUtils.isEmpty(res)) {
 			for (Menu m : res) {
-				MenuId menuId = new MenuId(m.getMenu(),m.getStoreName());
+				MenuId menuId = new MenuId(m.getMenu(), m.getStoreName());
 				deleteMenu(menuId);
 			}
 		}

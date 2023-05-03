@@ -2,10 +2,9 @@ package com.example.project_food_map.entity;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class MenuId implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
-
 	private String menu;
 	
 	private String storeName;
@@ -34,10 +33,6 @@ public class MenuId implements Serializable{
 
 	public void setStoreName(String storeName) {
 		this.storeName = storeName;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }

@@ -2,7 +2,7 @@ package com.example.project_food_map.vo;
 
 public class StoreAndMenu {
 
-	private String store;
+	private String name;
 	private String city;
 	private double point;
 	private String menu;
@@ -13,9 +13,9 @@ public class StoreAndMenu {
 		super();
 	}
 
-	public StoreAndMenu(String store, String city, double point, String menu, int price, int menuPoint) {
+	public StoreAndMenu(String name, String city, double point, String menu, int price, int menuPoint) {
 		super();
-		this.store = store;
+		this.name = name;
 		this.city = city;
 		this.point = point;
 		this.menu = menu;
@@ -23,12 +23,12 @@ public class StoreAndMenu {
 		this.menuPoint = menuPoint;
 	}
 
-	public String getStore() {
-		return store;
+	public String getName() {
+		return name;
 	}
 
-	public void setStore(String store) {
-		this.store = store;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getCity() {

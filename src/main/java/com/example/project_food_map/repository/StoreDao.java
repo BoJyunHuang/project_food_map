@@ -18,36 +18,35 @@ public interface StoreDao extends JpaRepository<Store, String> {
 	// 更新資訊-更改城市
 	@Transactional
 	@Modifying
-	@Query("update Store s set s.city = :city where c.name = :name")
+	@Query("update Store s set s.city = :city where s.name = :name")
 	public int updateStoreCityById(@Param("name") String name, @Param("city") String city);
 
 	// 更新資訊-更改評分
 	@Transactional
 	@Modifying
-	@Query("update Store s set s.point = :point where c.name = :name")
-	public int updateStorePointById(@Param("name") String name, @Param("point") double point);
+	@Query("update Store s set s.point = :point where s.name = :name")
+	public int updatePointById(@Param("name") String name, @Param("point") double point);
 
 	// 依照城市找到店家及餐點，並且要限制筆數
 	@Transactional
 	@Modifying
-	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, "
-			+ "m.menuPoint) from Store s join Menu m on s.name = m.storeName limit = :times where s.city = :city ")
-	public List<StoreAndMenu> findStoreAndMenuByCityLimit(@Param("city") String city, @Param("times") int times);
+	@Query(value = "select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, m.menuPoint) "
+			+ "from Store s join Menu m on s.name = m.storeName where s.city = :city")
+	public List<StoreAndMenu> findStoreAndMenuByCityLimit(@Param("city") String city);
 
 	// 依照評價找到店家及餐點，並且依店家評價排序
 	@Transactional
 	@Modifying
-	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, "
-			+ "m.menuPoint) from Store s join Menu m on s.name = m.storeName order by s.point desc "
-			+ "where s.point >= :point ")
+	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, m.menuPoint) "
+			+ "from Store s join Menu m on s.name = m.storeName where s.point >= :point order by s.point desc")
 	public List<StoreAndMenu> findStoreAndMenuByPointGreaterEqualThan(@Param("point") double point);
 
 	// 依照評價找到店家及餐點，並且依店家評價排序
 	@Transactional
 	@Modifying
-	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, "
-			+ "m.menuPoint) from Store s join Menu m on s.name = m.storeName order by s.point and m.menuPoint desc "
-			+ "where s.point >= :point and m.menuPoint = :menuPoint ")
+	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, m.menuPoint) "
+			+ "from Store s join Menu m on s.name = m.storeName where s.point >= :point and m.menuPoint >= :menuPoint "
+			+ "order by s.point desc, m.menuPoint desc")
 	public List<StoreAndMenu> findStoreAndMenuByPointAndMenuPointGreaterEqualThan(@Param("point") double point,
-			@Param("point") int menuPoint);
+			@Param("menuPoint") int menuPoint);
 }
