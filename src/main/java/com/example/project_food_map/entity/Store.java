@@ -29,6 +29,13 @@ public class Store {
 		this.city = city;
 	}
 
+	public Store(String name, String city, double point) {
+		super();
+		this.name = name;
+		this.city = city;
+		this.point = point;
+	}
+
 	public String getName() {
 		return name;
 	}

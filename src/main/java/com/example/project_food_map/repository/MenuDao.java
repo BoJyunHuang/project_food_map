@@ -18,6 +18,14 @@ public interface MenuDao extends JpaRepository<Menu, MenuId> {
 	// 找尋店家菜單存在與否
 	public List<Menu> findByStoreName(String storeName);
 
+	// 新增菜單
+	@Transactional
+	@Modifying
+	@Query(value = "insert into menu (menu, store_name, price, menu_point) select :menu, :storeName, :price, :menuPoint "
+			+ "where not exists (select 1 from menu where store_name = :storeName and menu = :menu)", nativeQuery = true)
+	public int insertMenu(@Param("menu") String menu, @Param("storeName") String storeName, @Param("price") int price,
+			@Param("menuPoint") int menuPoint);
+
 	// 更新資訊-更改價錢
 	@Transactional
 	@Modifying
@@ -32,8 +40,14 @@ public interface MenuDao extends JpaRepository<Menu, MenuId> {
 	public int updateMenuPointByMenuId(@Param("menu") String menu, @Param("storeName") String storeName,
 			@Param("menuPoint") int menuPoint);
 
+	// 刪除菜單
+	@Transactional
+	@Modifying
+	@Query("delete from Menu m where m.menu = :menu and m.storeName = :storeName")
+	public int deleteMenu(@Param("menu") String menu, @Param("storeName") String storeName);
+
 	// 取得平均分數
 	@Query("select round(avg(m.menuPoint), 1) from Menu m where m.storeName = :storeName")
-	public double getAverageMenuPoint(@Param("storeName") String storeName);
+	public Double getAverageMenuPoint(@Param("storeName") String storeName);
 
 }

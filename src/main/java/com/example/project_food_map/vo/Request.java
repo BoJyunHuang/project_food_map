@@ -13,6 +13,7 @@ public class Request {
 	private double point;
 	// double id
 	private MenuId menuId;
+	private Menu menuEntity;
 	// menu
 	private String menu;
 	@JsonProperty("store_name")
@@ -55,6 +56,14 @@ public class Request {
 
 	public void setMenuId(MenuId menuId) {
 		this.menuId = menuId;
+	}
+
+	public Menu getMenuEntity() {
+		return menuEntity;
+	}
+
+	public void setMenuEntity(Menu menuEntity) {
+		this.menuEntity = menuEntity;
 	}
 
 	public String getMenu() {
