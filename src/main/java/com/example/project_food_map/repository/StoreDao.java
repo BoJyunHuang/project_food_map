@@ -40,23 +40,17 @@ public interface StoreDao extends JpaRepository<Store, String> {
 	@Query("delete from Store s where s.name = :name")
 	public int deleteStore(@Param("name") String name);
 
-	// 依照城市找到店家及餐點，並且要限制筆數
-	@Transactional
-	@Modifying
+	// 依照城市找到店家及餐點
 	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, m.menuPoint) "
 			+ "from Store s join Menu m on s.name = m.storeName where s.city = :city")
 	public List<StoreAndMenu> findStoreAndMenuByCity(@Param("city") String city);
 
 	// 依照評價找到店家及餐點，並且依店家評價排序
-	@Transactional
-	@Modifying
 	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, m.menuPoint) "
 			+ "from Store s join Menu m on s.name = m.storeName where s.point >= :point order by s.point desc")
 	public List<StoreAndMenu> findByStorePointGreaterEqualThan(@Param("point") double point);
 
 	// 依照評價找到店家及餐點，並且依店家評價排序
-	@Transactional
-	@Modifying
 	@Query("select new com.example.project_food_map.vo.StoreAndMenu(s.name, s.city, s.point, m.menu, m.price, m.menuPoint) "
 			+ "from Store s join Menu m on s.name = m.storeName where s.point >= :point and m.menuPoint >= :menuPoint "
 			+ "order by s.point desc, m.menuPoint desc")
