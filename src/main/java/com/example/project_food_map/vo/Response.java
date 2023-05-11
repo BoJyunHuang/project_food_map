@@ -81,4 +81,12 @@ public class Response {
 		this.menuList = menuList;
 	}
 
+	public List<StoreAndMenu> getStoreAndMenuList() {
+		return storeAndMenuList;
+	}
+
+	public void setStoreAndMenuList(List<StoreAndMenu> storeAndMenuList) {
+		this.storeAndMenuList = storeAndMenuList;
+	}
+
 }
